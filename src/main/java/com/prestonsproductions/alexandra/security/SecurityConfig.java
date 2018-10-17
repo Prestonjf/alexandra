@@ -3,18 +3,16 @@ package com.prestonsproductions.alexandra.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 
-import com.prestonsproductions.alexandra.service.CustomUserDetailService;
+import com.prestonsproductions.alexandra.config.CustomSuccessHandler;
 
 /**
  * @author Preston Frazier
@@ -26,7 +24,12 @@ import com.prestonsproductions.alexandra.service.CustomUserDetailService;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
     @Autowired
-    private CustomUserDetailService userDetailService;
+    private UserAuthenticationProvider authProvider;
+    
+    @Bean
+    public AuthenticationSuccessHandler MyCustomSuccessHandler(){
+        return new CustomSuccessHandler();
+    }
     
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
@@ -35,18 +38,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.and()
 			.formLogin()
 			.loginPage("/login")
-			//.loginProcessingUrl("/auth-login")
 			.defaultSuccessUrl("/home",true)
+			.failureUrl("/login?failure=1")
+			.successHandler(MyCustomSuccessHandler())
 			.and()
-			.logout().logoutUrl("/logout").logoutSuccessUrl("/login").invalidateHttpSession(true).deleteCookies("JSESSIONID")
+			.logout().logoutUrl("/logout").logoutSuccessUrl("/login?logout=true").invalidateHttpSession(true).deleteCookies("JSESSIONID")
 			.and()
 			.httpBasic();
 		
 
 		http.csrf().ignoringAntMatchers("/login*");
-		//http.addFilterAfter(new CustomAuthenticationFilter(), BasicAuthenticationFilter.class);
-		http.sessionManagement().maximumSessions(5);
-		http.sessionManagement().invalidSessionUrl("/error-page");
+		http.sessionManagement().maximumSessions(1);
+		http.sessionManagement().invalidSessionUrl("/login");
 		http.headers().frameOptions().disable();
 	}
     
@@ -58,22 +61,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(authenticationProvider());
+        auth.authenticationProvider(authProvider); 
     }
-     
-    @Bean
-    public DaoAuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailService);
-        authProvider.setPasswordEncoder(passwordEncoder());
-        return authProvider;
-    }
-    
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-    
+
     @Bean
     public HttpSessionEventPublisher httpSessionEventPublisher() {
         return new HttpSessionEventPublisher();

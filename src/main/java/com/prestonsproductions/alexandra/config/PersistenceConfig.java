@@ -53,10 +53,9 @@ public class PersistenceConfig {
 			cpds.setPassword(properties.getString("com.prestonsproductions.alexandra.DATABASE_PASSWORD"));
 			
 			cpds.setMinPoolSize(1);
-			cpds.setInitialPoolSize(2);
-			cpds.setMaxPoolSize(20);
+			cpds.setInitialPoolSize(1);
+			cpds.setMaxPoolSize(10);
 			cpds.setMaxIdleTime(1800);
-			cpds.setIdleConnectionTestPeriod(1900);
 			cpds.setMaxStatements(50);
 		} catch (PropertyVetoException e1) {
 			e1.printStackTrace();

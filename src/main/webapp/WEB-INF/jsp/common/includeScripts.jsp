@@ -2,6 +2,7 @@
 <link rel="stylesheet" href="resources/static/css/bootstrap-4.1.3/bootstrap.min.css">
 <link rel="stylesheet" href="resources/static/css/tether.min.css">
 <link rel="stylesheet" href="resources/static/css/datatables.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <link rel="stylesheet" href="resources/static/css/alexandra/alexandra.css">
 
 <script src="resources/static/js/jquery-3.3.1.min.js"></script>
