@@ -3,7 +3,7 @@
 <link rel="stylesheet" href="resources/static/css/tether.min.css">
 <link rel="stylesheet" href="resources/static/css/datatables.min.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-<link rel="stylesheet" href="resources/static/css/alexandra/alexandra.css">
+<link rel="stylesheet" href="resources/static/css/alexandra/0.1.1/alexandra.css">
 
 <script src="resources/static/js/jquery-3.3.1.min.js"></script>
 <script src="resources/static/js/jquery-ui.min.js"></script>
@@ -11,5 +11,5 @@
 <script src="resources/static/js/tether.min.js"></script>
 <script src="resources/static/js/jquery.blockUI.js"></script>
 <script src="resources/static/js/datatables.min.js"></script>
-<script src="resources/static/js/alexandra/alexandra.js"></script>
+<script src="resources/static/js/alexandra/0.1.1/alexandra.js"></script>
 
