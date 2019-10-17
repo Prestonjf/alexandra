@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HomeController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Alexandra</a> &gt; <a href="index.source.html" class="el_package">com.prestonsproductions.alexandra.controller</a> &gt; <span class="el_source">HomeController.java</span></div><h1>HomeController.java</h1><pre class="source lang-java linenums">package com.prestonsproductions.alexandra.controller;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.prestonsproductions.alexandra.service.ScienceOlympiadService;
+import com.typesafe.config.Config;
+
+/**
+ * @author Preston Frazier
+ *
+ */
+@Controller
+<span class="nc" id="L25">public class HomeController {</span>
+<span class="nc" id="L26">	private final Logger logger = LoggerFactory.getLogger(getClass());</span>
+	
+	@Autowired
+	ScienceOlympiadService springTemplateService;
+	@Autowired
+	HttpServletRequest request;
+	@Autowired
+	private Config properties;
+    
+    @GetMapping(value = &quot;/login&quot;)
+    public ModelAndView login() {
+<span class="nc" id="L37">		ModelAndView model = new ModelAndView();</span>
+<span class="nc" id="L38">		model.setViewName(&quot;login&quot;);	</span>
+<span class="nc" id="L39">		model.addObject(&quot;msg&quot;, &quot;&quot;);</span>
+<span class="nc" id="L40">		addCommonModelItems(model);</span>
+<span class="nc" id="L41">        return model;       </span>
+    }
+    
+    
+    @GetMapping(value = {&quot;/&quot;, &quot;/home&quot;})
+    @PreAuthorize(&quot;hasRole('ROLE_USER')&quot;)
+    public ModelAndView home() {
+<span class="nc" id="L48">    	logger.debug(&quot;Loading Home Page!&quot;); </span>
+<span class="nc" id="L49">		ModelAndView model = new ModelAndView();</span>
+<span class="nc" id="L50">		model.addObject(&quot;msg&quot;, &quot;Welcome Home to Alexandra!&quot;);</span>
+<span class="nc" id="L51">		model.setViewName(&quot;home&quot;);	</span>
+<span class="nc" id="L52">		addCommonModelItems(model);</span>
+<span class="nc" id="L53">        return model;       </span>
+    }
+    
+    @RequestMapping(value = {&quot;/invalid-session&quot;}, method = {RequestMethod.GET, RequestMethod.POST})
+    public ModelAndView invalidSession() {
+<span class="nc" id="L58">    	logger.debug(&quot;Invalid Session&quot;); </span>
+<span class="nc" id="L59">    	request.getSession().invalidate();</span>
+<span class="nc" id="L60">		ModelAndView model = new ModelAndView();</span>
+<span class="nc" id="L61">		model.addObject(&quot;msg&quot;, &quot;Your session has expired!&quot;);</span>
+<span class="nc" id="L62">		model.setViewName(&quot;login&quot;);</span>
+<span class="nc" id="L63">		addCommonModelItems(model);</span>
+<span class="nc" id="L64">        return model;       </span>
+    }
+    
+    @PostMapping(value = &quot;/refreshSession&quot;)
+    public @ResponseBody String refreshSession() {
+<span class="nc" id="L69">    	logger.debug(&quot;Refresh Session&quot;);</span>
+<span class="nc" id="L70">    	return &quot;{}&quot;;</span>
+    }
+    
+    @GetMapping(value = {&quot;/error&quot;})
+    @PreAuthorize(&quot;hasRole('ROLE_USER')&quot;)
+    public ModelAndView error() {
+<span class="nc" id="L76">    	logger.debug(&quot;Error Page&quot;); </span>
+<span class="nc" id="L77">		ModelAndView model = new ModelAndView();</span>
+<span class="nc" id="L78">		addCommonModelItems(model);</span>
+<span class="nc" id="L79">		model.addObject(&quot;msg&quot;, &quot;Page Unavailable&quot;);</span>
+<span class="nc" id="L80">		model.setViewName(&quot;error-page&quot;);</span>
+<span class="nc" id="L81">        return model;       </span>
+    }
+    
+    private void addCommonModelItems(ModelAndView model) {
+<span class="nc" id="L85">    	model.addObject(&quot;properties&quot;, properties);</span>
+<span class="nc" id="L86">    }</span>
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

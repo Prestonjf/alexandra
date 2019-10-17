@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PersistenceConfig.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Alexandra</a> &gt; <a href="index.source.html" class="el_package">com.prestonsproductions.alexandra.config</a> &gt; <span class="el_source">PersistenceConfig.java</span></div><h1>PersistenceConfig.java</h1><pre class="source lang-java linenums">package com.prestonsproductions.alexandra.config;
+
+import java.beans.PropertyVetoException;
+import java.util.Properties;
+
+import javax.persistence.EntityManagerFactory;
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.JpaVendorAdapter;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+
+import com.mchange.v2.c3p0.ComboPooledDataSource;
+import com.typesafe.config.Config;
+
+/**
+ * @author Preston Frazier
+ *
+ */
+@Configuration
+@EnableTransactionManagement
+<span class="nc" id="L29">public class PersistenceConfig {</span>
+	
+	@Autowired
+	private Config properties;
+ 
+	   @Bean
+	   public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+<span class="nc" id="L36">	      LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();</span>
+<span class="nc" id="L37">	      em.setDataSource(dataSource());</span>
+<span class="nc" id="L38">	      em.setPackagesToScan(new String[] { &quot;com.prestonsproductions.alexandra&quot; });</span>
+	 
+<span class="nc" id="L40">	      JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();</span>
+<span class="nc" id="L41">	      em.setJpaVendorAdapter(vendorAdapter);</span>
+<span class="nc" id="L42">	      em.setJpaProperties(additionalProperties());</span>
+<span class="nc" id="L43">	      return em;</span>
+	   }
+	 
+	   @Bean
+	   public DataSource dataSource(){
+<span class="nc" id="L48">	      ComboPooledDataSource cpds = new ComboPooledDataSource();</span>
+	      try {
+<span class="nc" id="L50">			cpds.setDriverClass(properties.getString(&quot;com.prestonsproductions.alexandra.DATABASE_DRIVER&quot;));</span>
+<span class="nc" id="L51">			cpds.setJdbcUrl(properties.getString(&quot;com.prestonsproductions.alexandra.DATABASE_URL&quot;));</span>
+<span class="nc" id="L52">			cpds.setUser(properties.getString(&quot;com.prestonsproductions.alexandra.DATABASE_USERNAME&quot;));</span>
+<span class="nc" id="L53">			cpds.setPassword(properties.getString(&quot;com.prestonsproductions.alexandra.DATABASE_PASSWORD&quot;));</span>
+			
+<span class="nc" id="L55">			cpds.setMinPoolSize(1);</span>
+<span class="nc" id="L56">			cpds.setInitialPoolSize(1);</span>
+<span class="nc" id="L57">			cpds.setMaxPoolSize(10);</span>
+<span class="nc" id="L58">			cpds.setMaxIdleTime(1800);</span>
+<span class="nc" id="L59">			cpds.setMaxStatements(50);</span>
+<span class="nc" id="L60">		} catch (PropertyVetoException e1) {</span>
+<span class="nc" id="L61">			e1.printStackTrace();</span>
+<span class="nc" id="L62">		}</span>
+<span class="nc" id="L63">	      return cpds;</span>
+	   }
+	 
+	   @Bean
+	   public PlatformTransactionManager transactionManager(EntityManagerFactory emf){
+<span class="nc" id="L68">	      JpaTransactionManager transactionManager = new JpaTransactionManager();</span>
+<span class="nc" id="L69">	      transactionManager.setEntityManagerFactory(emf);</span>
+	 
+<span class="nc" id="L71">	      return transactionManager;</span>
+	   }
+	 
+	   @Bean
+	   public PersistenceExceptionTranslationPostProcessor exceptionTranslation(){
+<span class="nc" id="L76">	      return new PersistenceExceptionTranslationPostProcessor();</span>
+	   }
+	 
+	   Properties additionalProperties() {
+<span class="nc" id="L80">	      Properties properties = new Properties();</span>
+<span class="nc" id="L81">	      properties.setProperty(&quot;hibernate.dialect&quot;, &quot;org.hibernate.dialect.MySQL5Dialect&quot;);</span>
+<span class="nc" id="L82">	      properties.setProperty(&quot;hibernate.show_sql&quot;, &quot;false&quot;);	     </span>
+<span class="nc" id="L83">	      return properties;</span>
+	   }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

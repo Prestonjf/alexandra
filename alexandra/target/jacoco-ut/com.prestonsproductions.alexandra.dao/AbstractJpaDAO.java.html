@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AbstractJpaDAO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Alexandra</a> &gt; <a href="index.source.html" class="el_package">com.prestonsproductions.alexandra.dao</a> &gt; <span class="el_source">AbstractJpaDAO.java</span></div><h1>AbstractJpaDAO.java</h1><pre class="source lang-java linenums">package com.prestonsproductions.alexandra.dao;
+
+import java.io.Serializable;
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
+/**
+ * @author Preston Frazier
+ *
+ */
+<span class="nc" id="L13">public class AbstractJpaDAO&lt; T extends Serializable &gt; {</span>
+	private Class&lt; T &gt; clazz;
+	
+	@PersistenceContext
+	protected EntityManager entityManager;
+
+	   public final void setClazz( Class&lt; T &gt; clazzToSet ){
+<span class="nc" id="L20">		      this.clazz = clazzToSet;</span>
+<span class="nc" id="L21">		   }</span>
+		 
+		   public T findOne( long id ){
+<span class="nc" id="L24">		      return entityManager.find( clazz, id );</span>
+		   }
+		   @SuppressWarnings(&quot;unchecked&quot;)
+		public List&lt; T &gt; findAll(){
+<span class="nc" id="L28">		      return entityManager.createQuery( &quot;from &quot; + clazz.getName() ).getResultList();</span>
+		   }
+		 
+		   public void create( T entity ){
+<span class="nc" id="L32">		      entityManager.persist( entity );</span>
+<span class="nc" id="L33">		   }</span>
+		 
+		   public T update( T entity ){
+<span class="nc" id="L36">		      return entityManager.merge( entity );</span>
+		   }
+		 
+		   public void delete( T entity ){
+<span class="nc" id="L40">		      entityManager.remove( entity );</span>
+<span class="nc" id="L41">		   }</span>
+		   public void deleteById( long entityId ){
+<span class="nc" id="L43">		      T entity = findOne( entityId );</span>
+<span class="nc" id="L44">		      delete( entity );</span>
+<span class="nc" id="L45">		   }</span>
+		}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

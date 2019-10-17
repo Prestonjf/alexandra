@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CustomUserPrincipal.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Alexandra</a> &gt; <a href="index.source.html" class="el_package">com.prestonsproductions.alexandra.dto</a> &gt; <span class="el_source">CustomUserPrincipal.java</span></div><h1>CustomUserPrincipal.java</h1><pre class="source lang-java linenums">package com.prestonsproductions.alexandra.dto;
+
+import java.util.Collection;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import com.prestonsproductions.alexandra.model.User;
+
+public class CustomUserPrincipal implements UserDetails {
+
+	private static final long serialVersionUID = 1L;
+	private User user;
+	private boolean enabled;
+	private boolean accountExpired;
+	private boolean credentialsExpired;
+	private boolean accountLocked;
+	private Collection&lt;? extends GrantedAuthority&gt; authorities;
+    
+    public CustomUserPrincipal(User user, Collection&lt;? extends GrantedAuthority&gt; authorities, 
+<span class="nc" id="L21">    		boolean enabled, boolean accountExpired, boolean credentialsExpired, boolean accountLocked) {</span>
+<span class="nc" id="L22">        this.user = user;</span>
+<span class="nc" id="L23">        this.authorities = authorities;</span>
+<span class="nc" id="L24">        this.enabled = enabled;</span>
+<span class="nc" id="L25">        this.accountExpired = accountExpired;</span>
+<span class="nc" id="L26">        this.credentialsExpired = credentialsExpired;</span>
+<span class="nc" id="L27">        this.accountLocked = accountLocked;</span>
+<span class="nc" id="L28">    }</span>
+
+	public User getUser() {
+<span class="nc" id="L31">		return user;</span>
+	}
+
+	public void setUser(User user) {
+<span class="nc" id="L35">		this.user = user;</span>
+<span class="nc" id="L36">	}</span>
+
+	@Override
+	public Collection&lt;? extends GrantedAuthority&gt; getAuthorities() {
+		// TODO Auto-generated method stub
+<span class="nc" id="L41">		return authorities;</span>
+	}
+
+	@Override
+	public String getPassword() {
+		// TODO Auto-generated method stub
+<span class="nc" id="L47">		return user.getPassword();</span>
+	}
+
+	@Override
+	public String getUsername() {
+		// TODO Auto-generated method stub
+<span class="nc" id="L53">		return user.getUsername();</span>
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		// TODO Auto-generated method stub
+<span class="nc" id="L59">		return accountExpired;</span>
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		// TODO Auto-generated method stub
+<span class="nc" id="L65">		return accountLocked;</span>
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		// TODO Auto-generated method stub
+<span class="nc" id="L71">		return credentialsExpired;</span>
+	}
+
+	@Override
+	public boolean isEnabled() {
+		// TODO Auto-generated method stub
+<span class="nc" id="L77">		return enabled;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>
