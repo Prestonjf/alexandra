@@ -20,7 +20,7 @@ public class AlexandraServicesTest {
 	@Test
 	public void passwordBCryptor() {
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-		logger.debug(encoder.encode("1234"));
+		logger.info(encoder.encode("1234"));
 		assertEquals(true, true);
 	}
 }

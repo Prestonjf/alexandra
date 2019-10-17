@@ -13,7 +13,7 @@ import javax.persistence.PersistenceContext;
 public class AbstractJpaDAO< T extends Serializable > {
 	private Class< T > clazz;
 	
-	@PersistenceContext
+	@PersistenceContext(unitName="alexandraEntityManager")
 	protected EntityManager entityManager;
 
 	   public final void setClazz( Class< T > clazzToSet ){

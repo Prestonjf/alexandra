@@ -6,7 +6,10 @@ import java.util.Properties;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
@@ -28,10 +31,12 @@ import com.typesafe.config.Config;
 @EnableTransactionManagement
 public class PersistenceConfig {
 	
+	private final Logger logger = LoggerFactory.getLogger(getClass());
+	
 	@Autowired
 	private Config properties;
  
-	   @Bean
+	   @Bean(name="alexandraEntityManager")
 	   public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
 	      LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
 	      em.setDataSource(dataSource());
@@ -57,17 +62,16 @@ public class PersistenceConfig {
 			cpds.setMaxPoolSize(10);
 			cpds.setMaxIdleTime(1800);
 			cpds.setMaxStatements(50);
-		} catch (PropertyVetoException e1) {
-			e1.printStackTrace();
+		} catch (PropertyVetoException e) {
+			logger.error("", e);
 		}
 	      return cpds;
 	   }
 	 
 	   @Bean
-	   public PlatformTransactionManager transactionManager(EntityManagerFactory emf){
+	   public PlatformTransactionManager transactionManager(@Qualifier(value="alexandraEntityManager") EntityManagerFactory emf){
 	      JpaTransactionManager transactionManager = new JpaTransactionManager();
-	      transactionManager.setEntityManagerFactory(emf);
-	 
+	      transactionManager.setEntityManagerFactory(emf);	 
 	      return transactionManager;
 	   }
 	 
@@ -77,9 +81,10 @@ public class PersistenceConfig {
 	   }
 	 
 	   Properties additionalProperties() {
-	      Properties properties = new Properties();
-	      properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
-	      properties.setProperty("hibernate.show_sql", "false");	     
-	      return properties;
+	      Properties props = new Properties();
+	      props.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
+	      props.setProperty("hibernate.show_sql", "false");
+	      props.setProperty("hibernate.id.new_generator_mappings", "false");
+	      return props;
 	   }
 }
