@@ -15,7 +15,7 @@
 	<jacoco.version>0.8.3</jacoco.version>
 	
 	<!-- SPRING FRAMEWORK -->
-	<spring.version>5.1.5.RELEASE</spring.version>
+	<spring.version>5.2.3.RELEASE</spring.version>
 	<spring.security.version>5.1.5.RELEASE</spring.security.version>
 	
 	<!-- PERSISTENCE & DB -->
