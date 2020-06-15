@@ -16,7 +16,7 @@
 	
 	<!-- SPRING FRAMEWORK -->
 	<spring.version>5.1.5.RELEASE</spring.version>
-	<spring.security.version>5.1.5.RELEASE</spring.security.version>
+	<spring.security.version>5.3.3.RELEASE</spring.security.version>
 	
 	<!-- PERSISTENCE & DB -->
 	<mysql.version>5.1.6</mysql.version>
