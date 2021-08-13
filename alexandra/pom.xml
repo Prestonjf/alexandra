@@ -46,7 +46,7 @@
 	
 	<!-- ENCRYPTION / AWS -->
 	<aws.kms.version>1.11.276</aws.kms.version>
-	<bouncy.castle.version>1.58</bouncy.castle.version>
+	<bouncy.castle.version>1.67</bouncy.castle.version>
   </properties>
 
 
