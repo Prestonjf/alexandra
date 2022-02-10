@@ -21,7 +21,7 @@
 	<!-- PERSISTENCE & DB -->
 	<mysql.version>5.1.6</mysql.version>
 	<javax.persistence>2.2.0</javax.persistence>
-	<org.hibernate.version>5.2.10.Final</org.hibernate.version>
+	<org.hibernate.version>5.4.24.Final</org.hibernate.version>
 	<javax.servlet>4.0.0</javax.servlet>
 	
 	<!-- LOGGING -->
